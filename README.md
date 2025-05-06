@@ -8,14 +8,14 @@
 
 ### Passos para Execução
 
-1. Inicie os containers em modo detached:
+1. Inicie os containers em modo detached, use o comando:
 ```bash
-docker-compose up -d
+make run
 ```
 
-2. Execute as migrações do banco de dados:
+2. Execute as migrações do banco de dados, use o comando:
 ```bash
-docker-compose exec api-dev npm run migration:up
+make migrate-up
 ```
 
 3. Acesse a aplicação em:
@@ -26,6 +26,11 @@ http://localhost:3000
 4. Acesse a documentação Swagger em:
 ```
 http://localhost:3000/docs
+```
+
+5. Caso queira criar uma migração, use o comando:
+```
+make migrate-create -- name=migrations/nomeDaSuaMigracao
 ```
 
 ## Arquitetura do Projeto
