@@ -8,5 +8,6 @@ import { CategoriesInfrastructureModule } from './infrastructure/categories-infr
   controllers: [CategoriesController],
   providers: [CategoriesService, GetCategoriesQueryHandler],
   imports: [CategoriesInfrastructureModule],
+  exports: [CategoriesInfrastructureModule]
 })
 export class CategoriesModule {}

@@ -4,7 +4,7 @@ import { CategoriesService } from '../../application/categories.service';
 import { QueryBus } from '@nestjs/cqrs';
 import { CategoryReadModel } from '../../domain/read-models/category.read-model';
 import { GetCategoriesQueryHandler } from '../../application/queries/get-categories.query-handler';
-import { FindCategoriesRepository } from '../../application/ports/find-categories.repository';
+import { FindCategoriesRepository } from '../../application/ports/categories.repository';
 
 describe('CategoriesController', () => {
   let controller: CategoriesController;
