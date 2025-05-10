@@ -7,6 +7,12 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { ProductReadModel } from 'src/products/domain/read-models/product.read-model';
 import { IdResponse } from 'src/common/presenters/http/dto/id.response.dto';
 import { ProductStock } from 'src/products/domain/value-objects/product-stock';
+import { CreateProductCommand } from 'src/products/application/commands/create-product.command';
+import { UpdateProductCommand } from 'src/products/application/commands/update-product.command';
+import { GetProductsQuery } from 'src/products/application/queries/get-products.query';
+import { GetProductQuery } from 'src/products/application/queries/get-product.query';
+import { GetProductsByCategoryQuery } from 'src/products/application/queries/get-products-by-category.query';
+import { DeleteProductCommand } from 'src/products/application/commands/delete-product.command';
 
 describe('ProductsController', () => {
   let controller: ProductsController;
@@ -74,12 +80,20 @@ describe('ProductsController', () => {
       // Assert
       expect(result).toBeInstanceOf(IdResponse);
       expect(result.id).toBe(expectedId);
-      expect(commandBus.execute).toHaveBeenCalled();
+      expect(commandBus.execute).toHaveBeenCalledWith(
+        expect.any(CreateProductCommand)
+      );
+      const command = (commandBus.execute as jest.Mock).mock.calls[0][0];
+      expect(command.name).toBe(createProductDto.name);
+      expect(command.description).toBe(createProductDto.description);
+      expect(command.price).toBe(createProductDto.price);
+      expect(command.categoryId).toBe(createProductDto.categoryId);
+      expect(command.stock).toBe(createProductDto.stock);
     });
   });
 
   describe('findAll', () => {
-    it('should return an array of products', async () => {
+    it('should return an array of products when no category is provided', async () => {
       // Arrange
       const mockProducts = [mockProduct];
       jest.spyOn(queryBus, 'execute').mockResolvedValue(mockProducts);
@@ -89,7 +103,27 @@ describe('ProductsController', () => {
 
       // Assert
       expect(result).toEqual(mockProducts);
-      expect(queryBus.execute).toHaveBeenCalled();
+      expect(queryBus.execute).toHaveBeenCalledWith(
+        expect.any(GetProductsQuery)
+      );
+    });
+
+    it('should return filtered products when category is provided', async () => {
+      // Arrange
+      const categoryId = 'category-123';
+      const mockProducts = [mockProduct];
+      jest.spyOn(queryBus, 'execute').mockResolvedValue(mockProducts);
+
+      // Act
+      const result = await controller.findAll(categoryId);
+
+      // Assert
+      expect(result).toEqual(mockProducts);
+      expect(queryBus.execute).toHaveBeenCalledWith(
+        expect.any(GetProductsByCategoryQuery)
+      );
+      const query = (queryBus.execute as jest.Mock).mock.calls[0][0];
+      expect(query.categoryId).toBe(categoryId);
     });
   });
 
@@ -104,7 +138,11 @@ describe('ProductsController', () => {
 
       // Assert
       expect(result).toEqual(mockProduct);
-      expect(queryBus.execute).toHaveBeenCalled();
+      expect(queryBus.execute).toHaveBeenCalledWith(
+        expect.any(GetProductQuery)
+      );
+      const query = (queryBus.execute as jest.Mock).mock.calls[0][0];
+      expect(query.id).toBe(productId);
     });
   });
 
@@ -124,7 +162,12 @@ describe('ProductsController', () => {
       // Assert
       expect(result).toBeInstanceOf(IdResponse);
       expect(result.id).toBe(productId);
-      expect(commandBus.execute).toHaveBeenCalled();
+      expect(commandBus.execute).toHaveBeenCalledWith(
+        expect.any(UpdateProductCommand)
+      );
+      const command = (commandBus.execute as jest.Mock).mock.calls[0][0];
+      expect(command.id).toBe(productId);
+      expect(command.data).toEqual(updateProductDto);
     });
   });
 
@@ -140,7 +183,11 @@ describe('ProductsController', () => {
       // Assert
       expect(result).toBeInstanceOf(IdResponse);
       expect(result.id).toBe(productId);
-      expect(commandBus.execute).toHaveBeenCalled();
+      expect(commandBus.execute).toHaveBeenCalledWith(
+        expect.any(DeleteProductCommand)
+      );
+      const command = (commandBus.execute as jest.Mock).mock.calls[0][0];
+      expect(command.id).toBe(productId);
     });
   });
 });
