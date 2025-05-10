@@ -1,13 +1,15 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateProductCommand } from './update-product.command';
 import { ProductRepository } from '../ports/product.repository';
-import { NotFoundException } from '@nestjs/common';
+import { Logger, NotFoundException } from '@nestjs/common';
 import { ProductFactory } from '../../domain/factories/product.fatory';
 
 @CommandHandler(UpdateProductCommand)
 export class UpdateProductCommandHandler
   implements ICommandHandler<UpdateProductCommand>
 {
+  private readonly logger = new Logger(UpdateProductCommand.name);
+
   constructor(
     private readonly productRepository: ProductRepository,
     private readonly productFactory: ProductFactory,
@@ -26,6 +28,10 @@ export class UpdateProductCommandHandler
       command.data.price ?? existingProduct.price,
       command.data.categoryId ?? existingProduct.categoryId,
       command.data.stock ?? existingProduct.stock.value,
+    );
+
+    this.logger.debug(
+      `Updating product with id ${command.id}: ${JSON.stringify(updatedProduct)}`,
     );
 
     const savedProduct = await this.productRepository.save(updatedProduct);

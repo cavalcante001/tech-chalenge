@@ -5,4 +5,5 @@ export abstract class ProductRepository {
     abstract findAll(): Promise<ProductReadModel[]>
     abstract findById(id: string): Promise<ProductReadModel | null>
     abstract delete(id: string): Promise<void>
+    abstract findByCategory(categoryId: string): Promise<ProductReadModel[]>
 }

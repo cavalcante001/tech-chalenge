@@ -33,6 +33,13 @@ export class OrmProductRepository implements ProductRepository {
     return ProductMapper.toDomain(entity);
   }
 
+  async findByCategory(categoryId: string): Promise<ProductReadModel[]> {
+    const entities = await this.productRepository.find({ 
+      where: { category_id: categoryId } 
+    });
+    return entities.map(ProductMapper.toDomain);
+  }
+
   async delete(id: string): Promise<void> {
     await this.productRepository.delete(id);
   }

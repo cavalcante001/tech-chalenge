@@ -9,6 +9,7 @@ import { GetProductsQueryHandler } from './application/queries/get-products.quer
 import { GetProductQueryHandler } from './application/queries/get-product.query-handler';
 import { UpdateProductCommandHandler } from './application/commands/update-product.command-handler';
 import { DeleteProductCommandHandler } from './application/commands/delete-product.command-handler';
+import { GetProductsByCategoryQueryHandler } from './application/queries/get-products-by-category.query-handler';
 
 @Module({
   controllers: [ProductsController],
@@ -19,7 +20,8 @@ import { DeleteProductCommandHandler } from './application/commands/delete-produ
     GetProductsQueryHandler,
     GetProductQueryHandler,
     UpdateProductCommandHandler,
-    DeleteProductCommandHandler
+    DeleteProductCommandHandler,
+    GetProductsByCategoryQueryHandler
   ],
   imports: [ProductsInfrastructureModule, CategoriesModule],
 })

@@ -7,12 +7,13 @@ import {
   Param,
   Delete,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from '../../application/products.service';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { CreateProductCommand } from 'src/products/application/commands/create-product.command';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { IdResponse } from 'src/common/presenters/http/dto/id.response.dto';
 import { ProductReadModel } from 'src/products/domain/read-models/product.read-model';
 import { UpdateProductCommand } from 'src/products/application/commands/update-product.command';
@@ -52,7 +53,15 @@ export class ProductsController {
     description: 'Retorna todos os produtos',
     type: [ProductReadModel],
   })
-  findAll() {
+  @ApiQuery({
+    name: 'categoryId',
+    required: false,
+    description: 'ID da categoria para filtrar produtos',
+  })
+  findAll(@Query('categoryId') categoryId?: string) {
+    if (categoryId) {
+      return this.productsService.findByCategory(categoryId);
+    }
     return this.productsService.findAll();
   }
 

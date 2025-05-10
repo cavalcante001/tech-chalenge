@@ -5,6 +5,7 @@ import { GetProductsQuery } from './queries/get-products.query';
 import { GetProductQuery } from './queries/get-product.query';
 import { UpdateProductCommand } from './commands/update-product.command';
 import { DeleteProductCommand } from './commands/delete-product.command';
+import { GetProductsByCategoryQuery } from './queries/get-products-by-category.query';
 
 @Injectable()
 export class ProductsService {
@@ -23,6 +24,10 @@ export class ProductsService {
 
   findOne(id: string) {
     return this.queryBus.execute(new GetProductQuery(id));
+  }
+
+  findByCategory(categoryId: string) {
+    return this.queryBus.execute(new GetProductsByCategoryQuery(categoryId));
   }
 
   update(command: UpdateProductCommand) {
