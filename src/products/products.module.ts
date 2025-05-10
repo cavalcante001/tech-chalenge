@@ -5,10 +5,22 @@ import { ProductFactory } from './domain/factories/product.fatory';
 import { CreateProductCommandHandler } from './application/commands/create-product.command-handler';
 import { ProductsInfrastructureModule } from './infrastructure/persistence/products-infrastructure.module';
 import { CategoriesModule } from 'src/categories/categories.module';
+import { GetProductsQueryHandler } from './application/queries/get-products.query-handler';
+import { GetProductQueryHandler } from './application/queries/get-product.query-handler';
+import { UpdateProductCommandHandler } from './application/commands/update-product.command-handler';
+import { DeleteProductCommandHandler } from './application/commands/delete-product.command-handler';
 
 @Module({
   controllers: [ProductsController],
-  providers: [ProductsService, ProductFactory, CreateProductCommandHandler],
+  providers: [
+    ProductsService, 
+    ProductFactory, 
+    CreateProductCommandHandler,
+    GetProductsQueryHandler,
+    GetProductQueryHandler,
+    UpdateProductCommandHandler,
+    DeleteProductCommandHandler
+  ],
   imports: [ProductsInfrastructureModule, CategoriesModule],
 })
 export class ProductsModule {}

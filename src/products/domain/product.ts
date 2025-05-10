@@ -8,6 +8,8 @@ export class Product {
     private _price: number,
     private _categoryId: string,
     private _stock: ProductStock,
+    private _createdAt: Date,
+    private _updatedAt: Date,
   ) {
     this.validate();
   }
@@ -52,5 +54,13 @@ export class Product {
 
   get stock(): ProductStock {
     return this._stock;
+  }
+
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+
+  get updatedAt(): Date {
+    return this._updatedAt;
   }
 }

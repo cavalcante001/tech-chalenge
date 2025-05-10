@@ -13,6 +13,7 @@ export class ProductFactory {
     stock: number,
   ): Product {
     const stockVO = new ProductStock(stock);
+    const now = new Date();
 
     return new Product(
       randomUUID(),
@@ -20,7 +21,9 @@ export class ProductFactory {
       description,
       price,
       categoryId,
-      stockVO
+      stockVO,
+      now,
+      now
     );
   }
 }

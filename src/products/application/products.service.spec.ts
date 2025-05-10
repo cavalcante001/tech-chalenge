@@ -1,11 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductsService } from './products.service';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateProductCommand } from './commands/create-product.command';
 
 describe('ProductsService', () => {
   let service: ProductsService;
   let commandBus: CommandBus;
+  let queryBus: QueryBus;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -17,11 +18,18 @@ describe('ProductsService', () => {
             execute: jest.fn(),
           },
         },
+        {
+          provide: QueryBus,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     service = module.get<ProductsService>(ProductsService);
     commandBus = module.get<CommandBus>(CommandBus);
+    queryBus = module.get<QueryBus>(QueryBus);
   });
 
   it('should be defined', () => {

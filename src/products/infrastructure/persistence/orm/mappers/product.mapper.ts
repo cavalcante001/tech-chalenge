@@ -12,13 +12,14 @@ export class ProductMapper {
       productEntity.description,
       productEntity.price,
       productEntity.category_id,
-      productStock
+      productStock,
+      productEntity.createdAt,
+      productEntity.updatedAt
     );
   }
 
   static toPersistence(product: Product): ProductEntity {
     const entity = new ProductEntity();
-    const now = new Date();
 
     entity.id = product.id;
     entity.name = product.name;
@@ -26,8 +27,8 @@ export class ProductMapper {
     entity.price = product.price;
     entity.category_id = product.categoryId;
     entity.stock = product.stock.value;
-    entity.createdAt = now;
-    entity.updatedAt = now;
+    entity.createdAt = product.createdAt;
+    entity.updatedAt = product.updatedAt;
     
     return entity;
   }

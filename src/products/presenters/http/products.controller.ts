@@ -13,7 +13,9 @@ import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { CreateProductCommand } from 'src/products/application/commands/create-product.command';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { IdResponse } from 'src/common/dto/id.response.dto';
+import { IdResponse } from 'src/common/presenters/http/dto/id.response.dto';
+import { ProductReadModel } from 'src/products/domain/read-models/product.read-model';
+import { UpdateProductCommand } from 'src/products/application/commands/update-product.command';
 
 @Controller('products')
 export class ProductsController {
@@ -44,22 +46,57 @@ export class ProductsController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Listar todos os produtos' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Retorna todos os produtos',
+    type: [ProductReadModel],
+  })
   findAll() {
     return this.productsService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Listar um produto pelo ID' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Retorna um produto pelo ID',
+    type: ProductReadModel,
+  })
   findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
+    return this.productsService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Atualizar um produto pelo ID' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Atualiza um produto pelo ID',
+    type: ProductReadModel,
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    await this.productsService.update(
+      new UpdateProductCommand(id, updateProductDto),
+    );
+
+    return new IdResponse(id);
   }
 
+  @ApiOperation({ summary: 'Deletar um produto pelo ID' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Deleta um produto pelo ID',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Produto não encontrado',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const removedId = await this.productsService.remove(id);
+    return new IdResponse(removedId);
   }
 }
