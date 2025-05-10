@@ -3,8 +3,6 @@ import { CategoriesController } from './categories.controller';
 import { CategoriesService } from '../../application/categories.service';
 import { QueryBus } from '@nestjs/cqrs';
 import { CategoryReadModel } from '../../domain/read-models/category.read-model';
-import { GetCategoriesQueryHandler } from '../../application/queries/get-categories.query-handler';
-import { FindCategoriesRepository } from '../../application/ports/find-categories.repository';
 
 describe('CategoriesController', () => {
   let controller: CategoriesController;
@@ -26,17 +24,10 @@ describe('CategoriesController', () => {
       controllers: [CategoriesController],
       providers: [
         CategoriesService,
-        GetCategoriesQueryHandler,
         {
           provide: QueryBus,
           useValue: {
             execute: jest.fn().mockResolvedValue(mockCategories),
-          },
-        },
-        {
-          provide: FindCategoriesRepository,
-          useValue: {
-            findAll: jest.fn().mockResolvedValue(mockCategories),
           },
         },
       ],

@@ -15,6 +15,6 @@ migrate-down:
 	docker compose exec api-dev npm run migration:down
 
 migrate-create:
-	docker compose exec api-dev npm run migration:create -- $(name)
+	docker compose exec api-dev npm run migration:create -- migrations/$(name)
 	@echo "Migration created with name: $(name)"
 	@echo "Please run 'make migrate-up' to apply the migration."

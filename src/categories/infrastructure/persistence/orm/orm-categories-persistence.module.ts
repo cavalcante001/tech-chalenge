@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CategoryEntity } from './orm/entities/category.entity';
-import { OrmCategoryRepository } from './orm/repositories/category.repository';
+import { CategoryEntity } from './entities/category.entity';
+import { OrmCategoryRepository } from './repositories/category.repository';
 import { CategoryRepository } from 'src/categories/application/ports/categories.repository';
 
 @Module({
@@ -12,6 +12,6 @@ import { CategoryRepository } from 'src/categories/application/ports/categories.
       useClass: OrmCategoryRepository,
     },
   ],
-  exports: [CategoryRepository],
+  exports: [OrmCategoryRepository],
 })
-export class OrmCategoriesPersistenceModule {}
+export class OrmCategoriesPersistenceModule {} 

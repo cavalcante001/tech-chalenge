@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCategoriesQuery } from './get-categories.query';
-import { FindCategoriesRepository } from '../ports/find-categories.repository';
 import { CategoryReadModel } from '../../domain/read-models/category.read-model';
+import { CategoryRepository } from '../ports/categories.repository';
 
 @QueryHandler(GetCategoriesQuery)
 export class GetCategoriesQueryHandler
   implements IQueryHandler<GetCategoriesQuery, CategoryReadModel[]>
 {
   constructor(
-    private readonly categoriesRepository: FindCategoriesRepository,
+    private readonly categoriesRepository: CategoryRepository,
   ) {}
 
   async execute(query: GetCategoriesQuery) {

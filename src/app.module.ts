@@ -3,6 +3,9 @@ import { CategoriesModule } from './categories/categories.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
+import { ProductsModule } from './products/products.module';
+import { HealthModule } from './health/health.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -19,6 +22,9 @@ import { CqrsModule } from '@nestjs/cqrs';
       synchronize: false,
     }),
     CategoriesModule,
+    ProductsModule,
+    HealthModule, 
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
