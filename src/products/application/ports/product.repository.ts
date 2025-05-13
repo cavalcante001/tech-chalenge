@@ -3,7 +3,7 @@ import { ProductReadModel } from "src/products/domain/read-models/product.read-m
 export abstract class ProductRepository {
     abstract save(product: Product): Promise<Product>
     abstract findAll(): Promise<ProductReadModel[]>
-    abstract findById(id: string): Promise<ProductReadModel | null>
+    abstract findById(id: string): Promise<Product | null>
     abstract delete(id: string): Promise<void>
     abstract findByCategory(categoryId: string): Promise<ProductReadModel[]>
 }

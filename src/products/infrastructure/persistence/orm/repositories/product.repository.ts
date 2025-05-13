@@ -25,7 +25,7 @@ export class OrmProductRepository implements ProductRepository {
     return entities.map(ProductMapper.toDomain);
   }
 
-  async findById(id: string): Promise<ProductReadModel | null> {
+  async findById(id: string): Promise<Product | null> {
     const entity = await this.productRepository.findOne({ where: { id } });
     if (!entity) {
       return null;
