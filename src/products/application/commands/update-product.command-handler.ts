@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateProductCommand } from './update-product.command';
 import { ProductRepository } from '../ports/product.repository';
 import { Logger, NotFoundException } from '@nestjs/common';
-import { ProductFactory } from '../../domain/factories/product.fatory';
+import { ProductStock } from 'src/products/domain/value-objects/product-stock';
 
 @CommandHandler(UpdateProductCommand)
 export class UpdateProductCommandHandler
@@ -10,31 +10,37 @@ export class UpdateProductCommandHandler
 {
   private readonly logger = new Logger(UpdateProductCommand.name);
 
-  constructor(
-    private readonly productRepository: ProductRepository,
-    private readonly productFactory: ProductFactory,
-  ) {}
+  constructor(private readonly productRepository: ProductRepository) {}
 
   async execute(command: UpdateProductCommand): Promise<string> {
-    const existingProduct = await this.productRepository.findById(command.id);
-    
-    if (!existingProduct) {
+    const product = await this.productRepository.findById(command.id);
+
+    if (!product) {
       throw new NotFoundException(`Product with id ${command.id} not found`);
     }
 
-    const updatedProduct = this.productFactory.create(
-      command.data.name ?? existingProduct.name,
-      command.data.description ?? existingProduct.description,
-      command.data.price ?? existingProduct.price,
-      command.data.categoryId ?? existingProduct.categoryId,
-      command.data.stock ?? existingProduct.stock.value,
-    );
+    if (command.data.name) {
+      product.changeName(command.data.name);
+    }
+    if (command.data.description) {
+      product.changeDescription(command.data.description);
+    }
+
+    if (command.data.price) {
+      product.changePrice(command.data.price);
+    }
+    if (command.data.categoryId) {
+      product.changeCategoryId(command.data.categoryId);
+    }
+    if (command.data.stock) {
+      product.changeStock(new ProductStock(command.data.stock));
+    }
 
     this.logger.debug(
-      `Updating product with id ${command.id}: ${JSON.stringify(updatedProduct)}`,
+      `Updating product with id ${command.id}: ${JSON.stringify(product)}`,
     );
 
-    const savedProduct = await this.productRepository.save(updatedProduct);
-    return savedProduct.id;
+    const updatedProduct = await this.productRepository.save(product);
+    return updatedProduct.id;
   }
-} 
+}

@@ -28,12 +28,51 @@ export class Product {
     }
 
     if (!this._price || this._price <= 0) {
-      throw new Error('O preço do produto é obrigatório e deve ser maior que zero.');
+      throw new Error(
+        'O preço do produto é obrigatório e deve ser maior que zero.',
+      );
     }
 
     if (!this._stock) {
       throw new Error('O estoque é obrigatório.');
     }
+  }
+
+  changeName(name: string): void {
+    if (!name) {
+      throw new Error('O nome do produto é obrigatório.');
+    }
+    this._name = name;
+  }
+
+  changeDescription(description: string): void {
+    if (!description) {
+      throw new Error('A descrição do produto é obrigatória.');
+    }
+    this._description = description;
+  }
+
+  changePrice(price: number): void {
+    if (!price || price <= 0) {
+      throw new Error(
+        'O preço do produto é obrigatório e deve ser maior que zero.',
+      );
+    }
+    this._price = price;
+  }
+
+  changeCategoryId(categoryId: string): void {
+    if (!categoryId) {
+      throw new Error('O ID da categoria é obrigatório.');
+    }
+    this._categoryId = categoryId;
+  }
+
+  changeStock(stock: ProductStock): void {
+    if (!stock) {
+      throw new Error('O estoque é obrigatório.');
+    }
+    this._stock = stock;
   }
 
   get name(): string {

@@ -1,6 +1,9 @@
 # Use the official Node.js image as the base image
 FROM node:20
 
+# Set timezone environment variable
+ENV TZ=America/Sao_Paulo
+
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 

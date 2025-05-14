@@ -11,8 +11,8 @@ export class Products1746828262980 implements MigrationInterface {
                 price DECIMAL(10,2) NOT NULL,
                 category_id uuid NOT NULL,
                 stock INTEGER NOT NULL DEFAULT 0,
-                created_at TIMESTAMP NOT NULL,
-                updated_at TIMESTAMP NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+                updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
                 CONSTRAINT fk_category
                     FOREIGN KEY (category_id)
                     REFERENCES categories(id)

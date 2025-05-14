@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateProductCommand } from './create-product.command';
 import { Logger, NotFoundException } from '@nestjs/common';
-import { ProductFactory } from 'src/products/domain/factories/product.fatory';
+import { ProductFactory } from 'src/products/domain/factories/product.factory';
 import { ProductRepository } from '../ports/product.repository';
 import { CategoryRepository } from 'src/categories/application/ports/categories.repository';
 import { CategoryNotFoundException } from 'src/categories/domain/category.errors';
