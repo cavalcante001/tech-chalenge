@@ -18,23 +18,27 @@ export class UpdateCustomerCommandHandler
 
   async execute(command: UpdateCustomerCommand): Promise<string> {
     const existingCustomer = await this.customerRepository.findById(command.id);
+    const updatedCustomer = command.data;
     
     if (!existingCustomer) {
       throw new NotFoundException(`Customer with id ${command.id} not found`);
     }
 
-    const updatedCustomer = this.customerFactory.update(
-      existingCustomer,
-      command.data.name,
-      command.data.email,
-      command.data.cpf,
-    );
-
+    if (updatedCustomer.name) {
+        existingCustomer.updateName(updatedCustomer.name);
+    }
+    if (updatedCustomer.email) {
+        existingCustomer.updateEmail(updatedCustomer.email);
+    }
+    if (updatedCustomer.cpf) {
+        existingCustomer.updateCpf(updatedCustomer.cpf);
+    }
+    
     this.logger.debug(
-      `Updating customer with id ${command.id}: ${JSON.stringify(updatedCustomer)}`,
+      `Updating customer with CPF ${updatedCustomer.cpf}: ${JSON.stringify(updatedCustomer)}`,
     );
 
-    const savedCustomer = await this.customerRepository.save(updatedCustomer);
+    const savedCustomer = await this.customerRepository.save(existingCustomer);
     return savedCustomer.id;
   }
 } 

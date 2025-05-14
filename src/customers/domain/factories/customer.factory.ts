@@ -20,18 +20,5 @@ export class CustomerFactory {
       now
     );
   }
-
-  update(existing: Customer, name?: string, email?: string, cpf?: string): Customer {
-    if (name && name !== existing.name) {
-      existing.updateName(name);
-    }
-    if (email && email !== existing.email) {
-      existing.updateEmail(email);
-    }
-    if (cpf && cpf !== existing.cpf) {
-      existing.updateCpf(cpf);
-    }
-    return existing;
-  }
   
 }

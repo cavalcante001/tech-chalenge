@@ -9,8 +9,8 @@ export class Customer1747145876697 implements MigrationInterface {
             name VARCHAR(255),
             cpf CHAR(11) UNIQUE,
             email VARCHAR(255) UNIQUE,
-            created_at TIMESTAMP WITH TIME ZONE NOW(),
-            updated_at TIMESTAMP WITH TIME ZONE NOW()
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
             );
         `);
     }
