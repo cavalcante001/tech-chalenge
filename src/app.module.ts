@@ -6,7 +6,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ProductsModule } from './products/products.module';
 import { HealthModule } from './health/health.module';
 import { AppController } from './app.controller';
-
+import { CustomersModule } from './customers/customers.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -23,6 +23,7 @@ import { AppController } from './app.controller';
     }),
     CategoriesModule,
     ProductsModule,
+    CustomersModule,
     HealthModule, 
   ],
   controllers: [AppController],
