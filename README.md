@@ -8,14 +8,14 @@
 
 ### Passos para Execução
 
-1. Inicie os containers em modo detached, use o comando:
+1. Para iniciar os containers, use o comando:
 ```bash
-make run
+make init
 ```
 
-2. Execute as migrações do banco de dados, use o comando:
+2. Para executar a aplicação, use o comando:
 ```bash
-make migrate-up
+make run
 ```
 
 3. Acesse a aplicação em:
@@ -30,7 +30,12 @@ http://localhost:3000/docs
 
 5. Caso queira criar uma migração, use o comando:
 ```
-make migrate-create -- name=migrations/nomeDaSuaMigracao
+make migrate-create -- name=nomeDaSuaMigracao
+```
+
+6. Caso queira limpar os containers, use o comando:
+```bash
+make clean
 ```
 
 ## Arquitetura do Projeto
@@ -42,7 +47,7 @@ Este projeto segue o padrão de Arquitetura Hexagonal (também conhecida como Po
 ```
 src/
 ├── categories/
-│   ├── application/          # Camada de aplicação (casos de uso)
+│   ├── application/         # Camada de aplicação (casos de uso)
 │   │   ├── ports/           # Portas (interfaces)
 │   │   ├── queries/         # Handlers de consultas
 │   │   └── categories.service.ts
