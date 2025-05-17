@@ -10,7 +10,7 @@ export class OrderCreatedEventHandler implements IEventHandler<OrderCreatedEvent
     constructor(private readonly orderRepository: CreateOrderRepository) {}
 
     async handle(event: OrderCreatedEvent) {
-        this.logger.log(`Order created event: ${event}`);
+        this.logger.log(`Order created event: ${JSON.stringify(event)}`);
 
         await this.orderRepository.refreshReadModel();
     }
