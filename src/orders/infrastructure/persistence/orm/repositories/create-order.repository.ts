@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrderRepository } from 'src/orders/application/ports/create-order.repository';
 import { OrderEntity } from '../entities/order.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderMapper } from '../mappers/order.mapper';
 import { Order } from 'src/orders/domain/order';
@@ -11,6 +11,7 @@ export class OrmCreateOrderRepository implements CreateOrderRepository {
   constructor(
     @InjectRepository(OrderEntity)
     private readonly orderRepository: Repository<OrderEntity>,
+    private readonly dataSource: DataSource,
   ) {}
 
   async save(order: Order): Promise<Order> {
@@ -20,5 +21,9 @@ export class OrmCreateOrderRepository implements CreateOrderRepository {
       return savedOrder;
     });
     return OrderMapper.toDomain(savedOrder);
+  }
+
+  async refreshReadModel(): Promise<void> {
+    await this.dataSource.query('REFRESH MATERIALIZED VIEW CONCURRENTLY read_orders_summary');
   }
 }

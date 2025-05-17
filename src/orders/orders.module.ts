@@ -9,6 +9,7 @@ import { CategoriesModule } from 'src/categories/categories.module';
 import { OrdersInfrastructureModule } from './infrastructure/persistence/orders-infrastructure.module';
 import { GetOrdersQueryHandler } from './application/queries/get-orders.query-handler';
 import { GetOrderQueryHandler } from './application/queries/get-order.query-handler';
+import { OrderCreatedEventHandler } from './application/event-handlers/order-created.event-handler';
 
 @Module({
   controllers: [OrdersController],
@@ -17,7 +18,8 @@ import { GetOrderQueryHandler } from './application/queries/get-order.query-hand
     CreateOrderCommandHandler, 
     OrderFactory,
     GetOrdersQueryHandler,
-    GetOrderQueryHandler
+    GetOrderQueryHandler,
+    OrderCreatedEventHandler
   ],
   imports: [
     ProductsModule,

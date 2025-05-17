@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { CreateOrderCommand } from './create-order.command';
 import { ProductRepository } from 'src/products/application/ports/product.repository';
 import { OrderFactory } from 'src/orders/domain/factories/order.factory';
@@ -6,6 +6,7 @@ import { CustomerRepository } from 'src/customers/application/ports/customer.rep
 import { Logger, NotFoundException } from '@nestjs/common';
 import { CategoryRepository } from 'src/categories/application/ports/categories.repository';
 import { CreateOrderRepository } from '../ports/create-order.repository';
+import { OrderCreatedEvent } from 'src/orders/domain/events/order-created.event';
 
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderCommandHandler
@@ -19,6 +20,7 @@ export class CreateOrderCommandHandler
     private readonly customerRepository: CustomerRepository,
     private readonly categoryRepository: CategoryRepository,
     private readonly orderRepository: CreateOrderRepository,
+    private readonly eventBus: EventBus,
   ) {}
 
   async execute(command: CreateOrderCommand) {
@@ -70,6 +72,8 @@ export class CreateOrderCommandHandler
     const order = this.orderFactory.create(command.customerId, itemData);
 
     const newOrder = await this.orderRepository.save(order);
+
+    this.eventBus.publish(new OrderCreatedEvent(newOrder));
 
     return newOrder.id;
   }
