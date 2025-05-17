@@ -3,7 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class CustomerReadModel {
   @ApiProperty({
     description: 'Identificador único da cliente',
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    example: '3f69217b-d5a0-4dd3-9005-719277ea325b',
   })
   id: string;
 
@@ -19,10 +19,9 @@ export class CustomerReadModel {
   })
   email: string;
 
-@ApiProperty({
-  description: 'CPF da cliente',
-  example: '123.456.789-00',
-})
-cpf: string;
-
+  @ApiProperty({
+    description: 'CPF da cliente',
+    example: '123.456.789-00',
+  })
+  cpf: string;
 }

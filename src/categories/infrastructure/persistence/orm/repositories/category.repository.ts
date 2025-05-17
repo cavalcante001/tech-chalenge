@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryMapper } from '../mappers/category.mapper';
 import { CategoryRepository } from 'src/categories/application/ports/categories.repository';
 import { CategoryNotFoundException } from 'src/categories/domain/category.errors';
+import { In } from 'typeorm';
+import { Category } from 'src/categories/domain/category';
 
 @Injectable()
 export class OrmCategoryRepository implements CategoryRepository {
@@ -25,5 +27,10 @@ export class OrmCategoryRepository implements CategoryRepository {
       throw new CategoryNotFoundException();
     }
     return CategoryMapper.toDomain(category);
+  }
+
+  async findManyByIds(ids: string[]): Promise<Category[]> {
+    const categories = await this.categoryRepository.find({ where: { id: In(ids) } });
+    return categories.map(CategoryMapper.toDomain);
   }
 } 

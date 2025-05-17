@@ -5,3 +5,4 @@ tunnels:
   api:
     proto: http
     addr: api-dev:3000 
+    domain: frank-raptor-vastly.ngrok-free.app

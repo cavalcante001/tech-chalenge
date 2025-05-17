@@ -21,5 +21,6 @@ import { CustomerInfrastructureModule } from './infrastructure/customer-infrastr
     DeleteCustomerCommandHandler
   ],
   imports: [CustomerInfrastructureModule],
+  exports: [CustomerInfrastructureModule],
 })
 export class CustomersModule {}

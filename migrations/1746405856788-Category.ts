@@ -22,6 +22,7 @@ export class Category1746405856788 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DROP TABLE IF EXISTS "products"`);
     await queryRunner.query(`DROP TABLE "categories"`);
     await queryRunner.query(`DROP EXTENSION IF EXISTS "uuid-ossp"`);
   }

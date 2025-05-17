@@ -3,7 +3,7 @@ import { ProductRepository } from 'src/products/application/ports/product.reposi
 import { Product } from 'src/products/domain/product';
 import { ProductMapper } from '../mappers/product.mapper';
 import { ProductEntity } from '../entities/product.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductReadModel } from 'src/products/domain/read-models/product.read-model';
 
@@ -42,5 +42,10 @@ export class OrmProductRepository implements ProductRepository {
 
   async delete(id: string): Promise<void> {
     await this.productRepository.delete(id);
+  }
+
+  async findManyByIds(ids: string[]): Promise<Product[]> {
+    const entities = await this.productRepository.find({ where: { id: In(ids) } });
+    return entities.map(ProductMapper.toDomain);
   }
 }
