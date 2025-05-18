@@ -5,10 +5,12 @@ import { OrderRepository } from '../ports/order.repository';
 import { OrderReadModel } from 'src/orders/domain/read-models/order.read-model';
 import { GetOrderPaymentQrcodeQuery } from './get-order.payment-qrcode';
 import { NotFoundException } from '@nestjs/common';
+import { GenerateQrCode } from '../ports/order.generate-qrcode';
+
 
 @QueryHandler(GetOrderPaymentQrcodeQuery)
 export class GetOrderPaymentQrcodeQueryHandler implements IQueryHandler<GetOrderPaymentQrcodeQuery> {
-  constructor(private readonly orderRepository: OrderRepository) {}
+  constructor(private readonly orderRepository: OrderRepository, private readonly generateQrCode: GenerateQrCode) {}
 
   async execute(query: GetOrderPaymentQrcodeQuery) {
     const order = await this.orderRepository.findById(query.id);
@@ -18,6 +20,17 @@ export class GetOrderPaymentQrcodeQueryHandler implements IQueryHandler<GetOrder
     }
     console.log(order.items[0].productDescription)
 
-    return order.items;
+    return this.generateQrCode.generateQrCode({
+      orderId: order.id,
+      totalAmount: order.total,
+      items: order.items.map(product => ({
+        category: product.categoryName,
+        title: product.productName,
+        description: product.productDescription,
+        quantity: product.quantity,
+        unitPrice: product.unitPrice,
+        totalAmount: product.totalPrice
+        })),
+    });
   }
-} 
+}
