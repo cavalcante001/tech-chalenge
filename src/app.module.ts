@@ -7,6 +7,7 @@ import { ProductsModule } from './products/products.module';
 import { HealthModule } from './health/health.module';
 import { AppController } from './app.controller';
 import { CustomersModule } from './customers/customers.module';
+import { OrdersModule } from './orders/orders.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -24,7 +25,8 @@ import { CustomersModule } from './customers/customers.module';
     CategoriesModule,
     ProductsModule,
     CustomersModule,
-    HealthModule, 
+    HealthModule,
+    OrdersModule, 
   ],
   controllers: [AppController],
 })

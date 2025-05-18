@@ -10,7 +10,7 @@ export class ProductMapper {
       productEntity.id,
       productEntity.name,
       productEntity.description,
-      productEntity.price,
+      Number(productEntity.price),
       productEntity.category_id,
       productStock,
       productEntity.createdAt,

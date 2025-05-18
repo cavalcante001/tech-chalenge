@@ -24,5 +24,6 @@ import { GetProductsByCategoryQueryHandler } from './application/queries/get-pro
     GetProductsByCategoryQueryHandler
   ],
   imports: [ProductsInfrastructureModule, CategoriesModule],
+  exports: [ProductsInfrastructureModule],
 })
 export class ProductsModule {}
