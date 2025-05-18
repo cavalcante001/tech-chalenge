@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { OrderReadyRepository } from 'src/orders/application/ports/order-ready.repository';
+import { OrderReadRepository } from 'src/orders/application/ports/order-read.repository';
 import { OrderReadModel } from 'src/orders/domain/read-models/order.read-model';
 import { OrderSummaryView } from '../views/order-summary.view';
 
 @Injectable()
-export class OrmOrderReadyRepository implements OrderReadyRepository {
+export class OrmOrderReadyRepository implements OrderReadRepository {
   constructor(
     @InjectRepository(OrderSummaryView)
     private readonly orderSummaryView: Repository<OrderReadModel>,

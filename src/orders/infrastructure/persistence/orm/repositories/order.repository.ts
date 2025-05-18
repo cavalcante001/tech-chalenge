@@ -28,7 +28,7 @@ export class OrmOrderRepository implements OrderRepository {
   }
 
   async findById(id: string): Promise<Order | null> {
-    const orderEntity = await this.orderRepository.findOne({ where: { id } });
+    const orderEntity = await this.orderRepository.findOne({ where: { id }, relations: ['items'] });
     return orderEntity ? OrderMapper.toDomain(orderEntity) : null;
   }
 }
