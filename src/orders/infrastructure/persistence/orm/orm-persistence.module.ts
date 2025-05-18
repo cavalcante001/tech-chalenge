@@ -2,24 +2,24 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { OrderEntity } from "./entities/order.entity";
 import { OrderItemEntity } from "./entities/order-item.entity";
-import { CreateOrderRepository } from "src/orders/application/ports/create-order.repository";
-import { OrmCreateOrderRepository } from "./repositories/create-order.repository";
-import { FindOrdersRepository } from "src/orders/application/ports/find-orders.repository";
-import { OrmFindOrdersRepository } from "./repositories/find-orders.repository";
+import { OrderRepository } from "src/orders/application/ports/order.repository";
+import { OrmOrderRepository } from "./repositories/order.repository";
+import { OrderReadyRepository } from "src/orders/application/ports/order-ready.repository";
+import { OrmOrderReadyRepository } from "./repositories/order-read.repository.ts";
 import { OrderSummaryView } from "./views/order-summary.view";
 
 @Module({
     imports: [TypeOrmModule.forFeature([OrderEntity, OrderItemEntity, OrderSummaryView])],
     providers: [
         {
-            provide: CreateOrderRepository,
-            useClass: OrmCreateOrderRepository,
+            provide: OrderRepository,
+            useClass: OrmOrderRepository,
         },
         {
-            provide: FindOrdersRepository,
-            useClass: OrmFindOrdersRepository,
+            provide: OrderReadyRepository,
+            useClass: OrmOrderReadyRepository,
         }
     ],
-    exports: [CreateOrderRepository, FindOrdersRepository]
+    exports: [OrderRepository, OrderReadyRepository]
 })
 export class OrmOrderPersistenceModule {}

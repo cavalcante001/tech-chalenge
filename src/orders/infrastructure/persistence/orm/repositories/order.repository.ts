@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderRepository } from 'src/orders/application/ports/create-order.repository';
+import { OrderRepository } from 'src/orders/application/ports/order.repository';
 import { OrderEntity } from '../entities/order.entity';
 import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,7 +7,7 @@ import { OrderMapper } from '../mappers/order.mapper';
 import { Order } from 'src/orders/domain/order';
 
 @Injectable()
-export class OrmCreateOrderRepository implements CreateOrderRepository {
+export class OrmOrderRepository implements OrderRepository {
   constructor(
     @InjectRepository(OrderEntity)
     private readonly orderRepository: Repository<OrderEntity>,
@@ -25,5 +25,10 @@ export class OrmCreateOrderRepository implements CreateOrderRepository {
 
   async refreshReadModel(): Promise<void> {
     await this.dataSource.query('REFRESH MATERIALIZED VIEW CONCURRENTLY read_orders_summary');
+  }
+
+  async findById(id: string): Promise<Order | null> {
+    const orderEntity = await this.orderRepository.findOne({ where: { id } });
+    return orderEntity ? OrderMapper.toDomain(orderEntity) : null;
   }
 }

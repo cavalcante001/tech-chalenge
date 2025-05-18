@@ -5,7 +5,7 @@ import { OrderFactory } from 'src/orders/domain/factories/order.factory';
 import { CustomerRepository } from 'src/customers/application/ports/customer.repository';
 import { Logger, NotFoundException } from '@nestjs/common';
 import { CategoryRepository } from 'src/categories/application/ports/categories.repository';
-import { CreateOrderRepository } from '../ports/create-order.repository';
+import { OrderRepository } from '../ports/order.repository';
 import { OrderCreatedEvent } from 'src/orders/domain/events/order-created.event';
 
 @CommandHandler(CreateOrderCommand)
@@ -19,7 +19,7 @@ export class CreateOrderCommandHandler
     private readonly orderFactory: OrderFactory,
     private readonly customerRepository: CustomerRepository,
     private readonly categoryRepository: CategoryRepository,
-    private readonly orderRepository: CreateOrderRepository,
+    private readonly orderRepository: OrderRepository,
     private readonly eventBus: EventBus,
   ) {}
 
