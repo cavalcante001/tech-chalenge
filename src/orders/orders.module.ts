@@ -10,6 +10,7 @@ import { OrdersInfrastructureModule } from './infrastructure/persistence/orders-
 import { GetOrdersQueryHandler } from './application/queries/get-orders.query-handler';
 import { GetOrderQueryHandler } from './application/queries/get-order.query-handler';
 import { OrderCreatedEventHandler } from './application/event-handlers/order-created.event-handler';
+import { GetOrderPaymentQrcodeQueryHandler } from './application/queries/get-order.payment-qrcode.query-handler';
 
 @Module({
   controllers: [OrdersController],
@@ -19,7 +20,8 @@ import { OrderCreatedEventHandler } from './application/event-handlers/order-cre
     OrderFactory,
     GetOrdersQueryHandler,
     GetOrderQueryHandler,
-    OrderCreatedEventHandler
+    OrderCreatedEventHandler,
+    GetOrderPaymentQrcodeQueryHandler
   ],
   imports: [
     ProductsModule,

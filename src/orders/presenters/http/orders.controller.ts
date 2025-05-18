@@ -81,4 +81,10 @@ export class OrdersController {
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.ordersService.update(+id, updateOrderDto);
   }
+
+  @Post(':id/payment-qrcode')
+  async generatePaymentQrcode(@Param('id') id: string) {
+    return this.ordersService.generatePaymentQrcode(id);
+  }
 }
+
