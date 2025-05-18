@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { OrmOrderPersistenceModule } from './orm/orm-persistence.module';
+import { OrmOrderPersistenceModule } from './persistence/orm/orm-persistence.module';
 
 @Module({
   imports: [OrmOrderPersistenceModule],

@@ -16,7 +16,8 @@ export class GetOrderPaymentQrcodeQueryHandler implements IQueryHandler<GetOrder
     if (!order) {
       throw new NotFoundException(`Order with id ${query.id} not found`);
     }
+    console.log(order.items[0].productDescription)
 
-    return order.total;
+    return order.items;
   }
 } 
