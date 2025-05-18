@@ -8,7 +8,7 @@ export class OrdersSummaryView1747451224399 implements MigrationInterface {
         o.id AS "idPedido",
         COALESCE(c.cpf, 'CPF não fornecido') AS "cpfCliente",
         CASE
-          WHEN o.status = 'pending' THEN 'Recebido'
+          WHEN o.status = 'pending' THEN 'Pagamento pendente'
           WHEN o.status = 'received' THEN 'Recebido'
           WHEN o.status = 'preparing' THEN 'Em preparação'
           WHEN o.status = 'ready' THEN 'Pronto'
