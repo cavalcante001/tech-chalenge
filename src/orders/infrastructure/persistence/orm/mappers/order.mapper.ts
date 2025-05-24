@@ -23,7 +23,7 @@ export class OrderMapper {
           item.productId,
           item.productName,
           item.productDescription,
-          item.unitPrice,
+          Number(item.unitPrice),
           item.quantity,
           item.categoryName,
         ),

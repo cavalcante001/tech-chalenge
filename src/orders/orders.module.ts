@@ -11,6 +11,7 @@ import { GetOrdersQueryHandler } from './application/queries/get-orders.query-ha
 import { GetOrderQueryHandler } from './application/queries/get-order.query-handler';
 import { OrderCreatedEventHandler } from './application/event-handlers/order-created.event-handler';
 import { GetOrderPaymentQrcodeQueryHandler } from './application/queries/get-order.payment-qrcode.query-handler';
+import { GatewayMercadoPagoModule } from './infrastructure/gateways/mercado-pago.module';
 
 @Module({
   controllers: [OrdersController],
@@ -28,6 +29,7 @@ import { GetOrderPaymentQrcodeQueryHandler } from './application/queries/get-ord
     CustomersModule,
     CategoriesModule,
     OrdersInfrastructureModule,
+    GatewayMercadoPagoModule,
   ],
 })
 export class OrdersModule {}

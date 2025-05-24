@@ -1,4 +1,7 @@
-
+export interface GenerateQrCodePayload {
+  in_store_order_id: string;
+  qr_data: string;
+}
 export abstract class GenerateQrCode {
   abstract generateQrCode(data: {
     orderId: string;
@@ -11,5 +14,5 @@ export abstract class GenerateQrCode {
       category: string;
       totalAmount: number;
     }[];
-  }): Promise<{ qrCodeUrl: string; externalReference: string }>;
+  }): Promise<GenerateQrCodePayload>;
 }

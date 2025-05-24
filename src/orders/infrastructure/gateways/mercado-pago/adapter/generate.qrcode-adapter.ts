@@ -1,35 +1,57 @@
-import { Injectable } from '@nestjs/common';
-import { OrderRepository } from 'src/orders/application/ports/order.repository';
-import { OrderEntity } from '../entities/order.entity';
-import { DataSource, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { OrderMapper } from '../mappers/order.mapper';
-import { Order } from 'src/orders/domain/order';
+import { HttpService } from '@nestjs/axios';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { AxiosError } from 'axios';
+import { catchError, firstValueFrom } from 'rxjs';
 import { GenerateQrCode } from 'src/orders/application/ports/order.generate-qrcode';
+import { QrCodePayload, QrCodeResponse } from '../dto/qrcode-payload.dto';
 
 @Injectable()
 export class GatewayMercadoPago implements GenerateQrCode {
-  constructor(
-    @InjectRepository(OrderEntity)
-    private readonly orderRepository: Repository<OrderEntity>,
-    private readonly dataSource: DataSource,
-  ) {}
+  private readonly logger = new Logger(GatewayMercadoPago.name);
 
-  async save(order: Order): Promise<Order> {
-    const orderEntity = OrderMapper.toPersistence(order);
-    const savedOrder = await this.orderRepository.manager.transaction(async (transactionalEntityManager) => {
-      const savedOrder = await transactionalEntityManager.save(OrderEntity, orderEntity);
-      return savedOrder;
-    });
-    return OrderMapper.toDomain(savedOrder);
-  }
+  constructor(private readonly httpService: HttpService) {}
 
-  async refreshReadModel(): Promise<void> {
-    await this.dataSource.query('REFRESH MATERIALIZED VIEW CONCURRENTLY read_orders_summary');
-  }
+  async generateQrCode(order: QrCodePayload): Promise<QrCodeResponse> {
+    this.logger.log(`Generating QR code for order ${order.orderId}`);
 
-  async findById(id: string): Promise<Order | null> {
-    const orderEntity = await this.orderRepository.findOne({ where: { id }, relations: ['items'] });
-    return orderEntity ? OrderMapper.toDomain(orderEntity) : null;
+    const { data } = await firstValueFrom(
+      this.httpService
+        .post<QrCodeResponse>(
+          `${process.env.MERCADO_PAGO_API}/instore/orders/qr/seller/collectors/${process.env.MERCADO_PAGO_USER_ID}/pos/${process.env.MERCADO_PAGO_EXTERNAL_POS_ID}/qrs`,
+          {
+            external_reference: order.orderId,
+            notification_url: process.env.NOTIFICATION_URL,
+            total_amount: order.totalAmount,
+            items: order.items.map((item) => ({
+              category: item.category,
+              title: item.title,
+              description: item.description,
+              quantity: item.quantity,
+              unit_measure: 'unity',
+              unit_price: item.unitPrice,
+              total_amount: item.totalAmount,
+            })),
+            title: 'Pagamento de pedido',
+            description: 'Pagamento de pedido',
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+            },
+          },
+        )
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response?.data);
+            throw new InternalServerErrorException(error.response?.data);
+          }),
+        ),
+    );
+
+    return data;
   }
 }
