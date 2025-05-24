@@ -8,6 +8,7 @@ import { CustomerFactory } from './domain/factories/customer.factory';
 import { UpdateCustomerCommandHandler } from './application/commands/update-customer.command-handler';
 import { DeleteCustomerCommandHandler } from './application/commands/delete-customer.command-handler';
 import { CustomerInfrastructureModule } from './infrastructure/customer-infrastructure.module';
+import { GetCustomersQueryHandler } from './application/queries/get-customers.query-handler';
 
 @Module({
   controllers: [CustomerController],
@@ -18,7 +19,8 @@ import { CustomerInfrastructureModule } from './infrastructure/customer-infrastr
     GetCustomerQueryHandler, 
     GetCustomerByCpfQueryHandler,
     UpdateCustomerCommandHandler,
-    DeleteCustomerCommandHandler
+    DeleteCustomerCommandHandler,
+    GetCustomersQueryHandler
   ],
   imports: [CustomerInfrastructureModule],
   exports: [CustomerInfrastructureModule],

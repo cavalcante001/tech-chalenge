@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateOrderDto } from '../presenters/dto/update-order.dto';
 import { CreateOrderCommand } from './commands/create-order.command';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetOrdersQuery } from './queries/get-orders.query';
 import { GetOrderQuery } from './queries/get-order.query';
+import { GetOrderPaymentQrcodeQuery } from './queries/get-order.payment-qrcode';
+import { UpdateOrderStatusCommand } from './commands/update-order-status.command';
 
 @Injectable()
 export class OrdersService {
@@ -16,15 +17,27 @@ export class OrdersService {
     return this.commandBus.execute(createOrderCommand);
   }
 
-  findAll() {
-    return this.queryBus.execute(new GetOrdersQuery());
+  findAll(getOrdersQuery: GetOrdersQuery) {
+    return this.queryBus.execute(getOrdersQuery);
   }
 
   findOne(id: string) {
     return this.queryBus.execute(new GetOrderQuery(id));
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  generatePaymentQrcode(id: string) {
+    return this.queryBus.execute(new GetOrderPaymentQrcodeQuery(id));
+  }
+
+  prepareOrder(updateOrderStatusCommand: UpdateOrderStatusCommand) {
+    return this.commandBus.execute(updateOrderStatusCommand);
+  }
+
+  finalizeOrder(updateOrderStatusCommand: UpdateOrderStatusCommand) {
+    return this.commandBus.execute(updateOrderStatusCommand);
+  }
+
+  deliverOrder(updateOrderStatusCommand: UpdateOrderStatusCommand) {
+    return this.commandBus.execute(updateOrderStatusCommand);
   }
 }

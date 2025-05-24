@@ -6,14 +6,17 @@ import {
   Patch,
   Param,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { OrdersService } from '../../application/orders.service';
 import { CreateOrderDto } from '../dto/create-order.dto';
-import { UpdateOrderDto } from '../dto/update-order.dto';
-import { ApiOperation, ApiResponse, ApiParam, ApiBody, ApiProperty } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { IdResponse } from 'src/common/presenters/http/dto/id.response.dto';
 import { CreateOrderCommand } from 'src/orders/application/commands/create-order.command';
 import { OrderReadModel } from 'src/orders/domain/read-models/order.read-model';
+import { GetOrdersQueryDto } from '../dto/get-orders-query.dto';
+import { GetOrdersQuery } from 'src/orders/application/queries/get-orders.query';
+import { UpdateOrderStatusCommand } from 'src/orders/application/commands/update-order-status.command';
 
 @Controller('orders')
 export class OrdersController {
@@ -35,13 +38,20 @@ export class OrdersController {
 
   @Get()
   @ApiOperation({ summary: 'Listar todos os pedidos' })
+  @ApiQuery({
+    name: 'paymentStatus',
+    enum: ['pending', 'received', 'preparing', 'ready', 'finished'],
+    required: false,
+    description: 'Filtrar pedidos por status do pagamento',
+    example: 'received',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     type: [OrderReadModel],
-    description: 'Lista de pedidos retornada com sucesso'
+    description: 'Lista de pedidos retornada com sucesso',
   })
-  findAll() {
-    return this.ordersService.findAll();
+  findAll(@Query() query: GetOrdersQueryDto) {
+    return this.ordersService.findAll(new GetOrdersQuery(query.paymentStatus));
   }
 
   @Get(':id')
@@ -50,35 +60,143 @@ export class OrdersController {
     name: 'id',
     description: 'ID do pedido',
     type: 'string',
-    example: 'd79e7d79-c087-4597-8c02-304bbf83b407'
+    example: 'd79e7d79-c087-4597-8c02-304bbf83b407',
   })
   @ApiResponse({
     status: HttpStatus.OK,
     type: OrderReadModel,
-    description: 'Pedido encontrado com sucesso'
+    description: 'Pedido encontrado com sucesso',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Pedido não encontrado'
+    description: 'Pedido não encontrado',
   })
   findOne(@Param('id') id: string) {
     return this.ordersService.findOne(id);
   }
 
-  @Patch(':id')
-  @ApiOperation({ summary: 'Atualizar um pedido' })
+  @Post(':id/payment-qrcode')
+  @ApiOperation({ summary: 'Gerar QR code de pagamento' })
+  @ApiParam({
+    name: 'id',
+    description: 'Identificador único do pedido',
+    type: 'string',
+    example: 'cd8fce34-5045-43f2-96ff-ab36b717bbad',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'QR code gerado com sucesso',
+    schema: {
+      properties: {
+        in_store_order_id: {
+          type: 'string',
+          example: 'cd8fce34-5045-43f2-96ff-ab36b717bbad',
+          description: 'Identificador do pedido na loja',
+        },
+        qr_data: {
+          type: 'string',
+          example:
+            '00020101021243650016COM.MERCADOLIBRE020130636cd8fce34-5045-43f2-96ff-ab36b717bbad5204000053039865802BR5909Test Test6009SAO PAULO62070503***63045742',
+          description: 'Dados do QR code para pagamento',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Pedido não encontrado',
+  })
+  async generatePaymentQrcode(@Param('id') id: string) {
+    return this.ordersService.generatePaymentQrcode(id);
+  }
+
+  @Patch(':id/prepare')
+  @ApiOperation({ summary: 'Iniciar preparação do pedido' })
   @ApiParam({
     name: 'id',
     description: 'ID do pedido',
     type: 'string',
-    example: 'd79e7d79-c087-4597-8c02-304bbf83b407'
+    example: 'd79e7d79-c087-4597-8c02-304bbf83b407',
   })
-  @ApiBody({ type: UpdateOrderDto })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Pedido atualizado com sucesso'
+    description: 'Pedido iniciado para preparação com sucesso',
   })
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Dados inválidos ou pedido não pode ser preparado',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Pedido não encontrado',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Erro interno do servidor',
+  })
+  async prepareOrder(@Param('id') id: string) {
+    await this.ordersService.prepareOrder(
+      new UpdateOrderStatusCommand(id, 'preparing'),
+    );
+  }
+
+  @Patch(':id/finalize')
+  @ApiOperation({ summary: 'Finalizar preparação do pedido' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID do pedido',
+    type: 'string',
+    example: 'd79e7d79-c087-4597-8c02-304bbf83b407',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Pedido finalizado com sucesso',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Dados inválidos ou pedido não pode ser finalizado',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Pedido não encontrado',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Erro interno do servidor',
+  })
+  async finalizeOrder(@Param('id') id: string) {
+    await this.ordersService.finalizeOrder(
+      new UpdateOrderStatusCommand(id, 'ready'),
+    );
+  }
+
+  @Patch(':id/deliver')
+  @ApiOperation({ summary: 'Marcar pedido como entregue' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID do pedido',
+    type: 'string',
+    example: 'd79e7d79-c087-4597-8c02-304bbf83b407',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Pedido marcado como entregue com sucesso',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Dados inválidos ou pedido não pode ser marcado como entregue',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Pedido não encontrado',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Erro interno do servidor',
+  })
+  async deliverOrder(@Param('id') id: string) {
+    await this.ordersService.deliverOrder(
+      new UpdateOrderStatusCommand(id, 'finished'),
+    );
   }
 }

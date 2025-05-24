@@ -27,6 +27,39 @@ export class Order {
     this.status = new OrderStatus('received');
   }
 
+  canPrepare(): boolean {
+    return this.status.equals(new OrderStatus('received'));
+  }
+
+  prepare() {
+    if (!this.canPrepare()) {
+      throw new Error("O pedido só pode ser preparado se o status atual for 'recebido'");
+    }
+    this.status = new OrderStatus('preparing');
+  }
+
+  canFinalize(): boolean {
+    return this.status.equals(new OrderStatus('preparing'));
+  }
+
+  finalize() {
+    if (!this.canFinalize()) {
+      throw new Error("O pedido só pode ser finalizado se o status atual for 'em preparação'");
+    }
+    this.status = new OrderStatus('ready');
+  }
+
+  canDeliver(): boolean {
+    return this.status.equals(new OrderStatus('ready'));
+  }
+
+  deliver() {
+    if (!this.canDeliver()) {
+      throw new Error("O pedido só pode ser entregue se o status atual for 'pronto'");
+    }
+    this.status = new OrderStatus('finished');
+  }
+
   get transactionCode(): string | null {
     return this._transactionCode;
   }

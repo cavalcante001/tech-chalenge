@@ -55,6 +55,17 @@ export class CustomerController {
     return this.customerService.findOne(id);
   }
 
+  @Get()
+  @ApiOperation({ summary: 'Listar todos os clientes' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Retorna todos os clientes',
+    type: [CustomerReadModel],
+  })
+  findAll() {
+    return this.customerService.findAll();
+  }
+
   @Get('cpf/:cpf')
   @ApiOperation({ summary: 'Listar um cliente pelo CPF' })
   @ApiResponse({
