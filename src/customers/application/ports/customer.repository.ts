@@ -5,4 +5,5 @@ export abstract class CustomerRepository {
     abstract findByCpf(cpf: string): Promise<CustomerReadModel | null>
     abstract findById(id: string): Promise<Customer | null>
     abstract delete (id: string): Promise<void>
+    abstract findAll(): Promise<CustomerReadModel[]>
 }

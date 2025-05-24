@@ -20,6 +20,7 @@ export class OrderMapper {
     orderModel.items = orderEntity.items.map(
       (item) =>
         new OrderItem(
+          item.id,
           item.productId,
           item.productName,
           item.productDescription,
@@ -38,6 +39,7 @@ export class OrderMapper {
     entity.customerId = order.customerId || '';
     entity.items = order.items.map((item) => {
       const orderItemEntity = new OrderItemEntity();
+      orderItemEntity.id = item.id;
       orderItemEntity.productId = item.productId;
       orderItemEntity.productName = item.productName;
       orderItemEntity.productDescription = item.productDescription;

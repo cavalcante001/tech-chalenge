@@ -5,6 +5,7 @@ import { GetCustomerByCpfQuery } from './queries/get-customer-by-cpf.query';
 import { GetCustomerQuery } from './queries/get-customer.query';
 import { CreateCustomerCommand } from './commands/create-customer.command';
 import { DeleteCustomerCommand } from './commands/delete-customer.command';
+import { GetCustomersQuery } from './queries/get-customers.query';
 
 @Injectable()
 export class CustomerService {
@@ -31,5 +32,9 @@ export class CustomerService {
 
   remove(id: string) {
     return this.commandBus.execute(new DeleteCustomerCommand(id));
+  }
+
+  findAll() {
+    return this.queryBus.execute(new GetCustomersQuery());
   }
 }

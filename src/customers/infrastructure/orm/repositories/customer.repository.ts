@@ -42,4 +42,9 @@ export class OrmCustomerRepository implements CustomerRepository {
   async delete(id: string): Promise<void> {
     await this.customerRepository.delete(id);
   }
+
+  async findAll(): Promise<CustomerReadModel[]> {
+    const entities = await this.customerRepository.find();
+    return entities.map(entity => CustomerMapper.toDomain(entity));
+  }
 }

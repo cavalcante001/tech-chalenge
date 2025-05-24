@@ -9,9 +9,9 @@ import { CategoriesModule } from 'src/categories/categories.module';
 import { OrdersInfrastructureModule } from './infrastructure/orders-infrastructure.module';
 import { GetOrdersQueryHandler } from './application/queries/get-orders.query-handler';
 import { GetOrderQueryHandler } from './application/queries/get-order.query-handler';
-import { OrderCreatedEventHandler } from './application/event-handlers/order-created.event-handler';
 import { GetOrderPaymentQrcodeQueryHandler } from './application/queries/get-order.payment-qrcode.query-handler';
 import { GatewayMercadoPagoModule } from './infrastructure/gateways/mercado-pago.module';
+import { UpdateOrderStatusCommandHandler } from './application/commands/update-order-status.command-handler';
 
 @Module({
   controllers: [OrdersController],
@@ -21,8 +21,8 @@ import { GatewayMercadoPagoModule } from './infrastructure/gateways/mercado-pago
     OrderFactory,
     GetOrdersQueryHandler,
     GetOrderQueryHandler,
-    OrderCreatedEventHandler,
-    GetOrderPaymentQrcodeQueryHandler
+    GetOrderPaymentQrcodeQueryHandler,
+    UpdateOrderStatusCommandHandler
   ],
   imports: [
     ProductsModule,
