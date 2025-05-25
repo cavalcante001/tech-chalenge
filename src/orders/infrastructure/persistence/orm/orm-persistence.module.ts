@@ -4,7 +4,7 @@ import { OrderEntity } from "./entities/order.entity";
 import { OrderItemEntity } from "./entities/order-item.entity";
 import { OrderRepository } from "src/orders/application/ports/order.repository";
 import { OrmOrderRepository } from "./repositories/order.repository";
-import { OrderReadyRepository } from "src/orders/application/ports/order-ready.repository";
+import { OrderReadRepository } from "src/orders/application/ports/order-read.repository";
 import { OrmOrderReadyRepository } from "./repositories/order-read.repository.ts";
 import { OrderSummaryView } from "./views/order-summary.view";
 
@@ -16,10 +16,10 @@ import { OrderSummaryView } from "./views/order-summary.view";
             useClass: OrmOrderRepository,
         },
         {
-            provide: OrderReadyRepository,
+            provide: OrderReadRepository,
             useClass: OrmOrderReadyRepository,
         }
     ],
-    exports: [OrderRepository, OrderReadyRepository]
+    exports: [OrderRepository, OrderReadRepository]
 })
 export class OrmOrderPersistenceModule {}

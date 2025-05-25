@@ -6,10 +6,12 @@ import { ProductsModule } from 'src/products/products.module';
 import { OrderFactory } from './domain/factories/order.factory';
 import { CustomersModule } from 'src/customers/customers.module';
 import { CategoriesModule } from 'src/categories/categories.module';
-import { OrdersInfrastructureModule } from './infrastructure/persistence/orders-infrastructure.module';
+import { OrdersInfrastructureModule } from './infrastructure/orders-infrastructure.module';
 import { GetOrdersQueryHandler } from './application/queries/get-orders.query-handler';
 import { GetOrderQueryHandler } from './application/queries/get-order.query-handler';
-import { OrderCreatedEventHandler } from './application/event-handlers/order-created.event-handler';
+import { GetOrderPaymentQrcodeQueryHandler } from './application/queries/get-order.payment-qrcode.query-handler';
+import { GatewayMercadoPagoModule } from './infrastructure/gateways/mercado-pago.module';
+import { UpdateOrderStatusCommandHandler } from './application/commands/update-order-status.command-handler';
 
 @Module({
   controllers: [OrdersController],
@@ -19,13 +21,15 @@ import { OrderCreatedEventHandler } from './application/event-handlers/order-cre
     OrderFactory,
     GetOrdersQueryHandler,
     GetOrderQueryHandler,
-    OrderCreatedEventHandler
+    GetOrderPaymentQrcodeQueryHandler,
+    UpdateOrderStatusCommandHandler
   ],
   imports: [
     ProductsModule,
     CustomersModule,
     CategoriesModule,
     OrdersInfrastructureModule,
+    GatewayMercadoPagoModule,
   ],
 })
 export class OrdersModule {}

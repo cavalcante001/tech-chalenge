@@ -6,8 +6,6 @@ import { CustomerRepository } from 'src/customers/application/ports/customer.rep
 import { Logger, NotFoundException } from '@nestjs/common';
 import { CategoryRepository } from 'src/categories/application/ports/categories.repository';
 import { OrderRepository } from '../ports/order.repository';
-import { OrderCreatedEvent } from 'src/orders/domain/events/order-created.event';
-
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderCommandHandler
   implements ICommandHandler<CreateOrderCommand>
@@ -73,7 +71,7 @@ export class CreateOrderCommandHandler
 
     const newOrder = await this.orderRepository.save(order);
 
-    this.eventBus.publish(new OrderCreatedEvent(newOrder));
+    await this.orderRepository.refreshReadModel();
 
     return newOrder.id;
   }

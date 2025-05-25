@@ -19,6 +19,7 @@ export class OrderFactory {
     const orderItems = items.map(
       (item) =>
         new OrderItem(
+          randomUUID(),
           item.product.id,
           item.product.name,
           item.product.description,
