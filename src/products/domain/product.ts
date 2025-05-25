@@ -8,6 +8,7 @@ export class Product {
     private _price: number,
     private _categoryId: string,
     private _stock: ProductStock,
+    private _image: string,
     private _createdAt: Date,
     private _updatedAt: Date,
   ) {
@@ -75,6 +76,10 @@ export class Product {
     this._stock = stock;
   }
 
+  changeImage(image: string): void {
+    this._image = image;
+  }
+
   get name(): string {
     return this._name;
   }
@@ -93,6 +98,10 @@ export class Product {
 
   get stock(): ProductStock {
     return this._stock;
+  }
+  
+  get image(): string {
+    return this._image;
   }
 
   get createdAt(): Date {

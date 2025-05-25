@@ -11,6 +11,7 @@ export class ProductFactory {
     price: number,
     categoryId: string,
     stock: number,
+    image: string,
   ): Product {
     const stockVO = new ProductStock(stock);
     const now = new Date();
@@ -22,6 +23,7 @@ export class ProductFactory {
       price,
       categoryId,
       stockVO,
+      image,
       now,
       now
     );

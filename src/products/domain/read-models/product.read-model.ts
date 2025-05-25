@@ -39,6 +39,12 @@ export class ProductReadModel {
   stock: ProductStock;
 
   @ApiProperty({
+    description: 'Imagem do produto',
+    example: 'https://example.com/image.jpg',
+  })
+  image: string;
+
+  @ApiProperty({
     description: 'Data de criação do produto',
     example: '2024-03-20T10:00:00Z',
   })

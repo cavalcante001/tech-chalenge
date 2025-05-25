@@ -36,4 +36,11 @@ export class CreateProductDto {
     example: 50,
   })
   stock: number;
+
+  @ApiProperty({
+    example: 'https://example.com/image.jpg',
+  })
+  @IsString()
+  image: string;
+
 }

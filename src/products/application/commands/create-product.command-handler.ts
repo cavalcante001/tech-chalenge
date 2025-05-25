@@ -38,6 +38,7 @@ export class CreateProductCommandHandler
       command.price,
       command.categoryId,
       command.stock,
+      command.image
     );
     const savedProduct = await this.productRepository.save(product);
     return savedProduct.id;

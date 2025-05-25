@@ -40,6 +40,7 @@ export class ProductsController {
         createProductDto.price,
         createProductDto.categoryId,
         createProductDto.stock,
+        createProductDto.image,
       ),
     );
 

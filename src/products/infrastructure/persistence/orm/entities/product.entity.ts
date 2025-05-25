@@ -20,6 +20,9 @@ export class ProductEntity {
     @Column({ type: 'integer', default: 0 })
     stock: number
 
+    @Column({ type: 'text', nullable: true })
+    image: string
+
     @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
     createdAt: Date
 
