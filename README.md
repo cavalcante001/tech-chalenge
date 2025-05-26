@@ -50,16 +50,15 @@ Este projeto implementa a Arquitetura Hexagonal, também conhecida como Ports an
   - Entidades (Category, Payment, etc.)
   - Value Objects
   - Regras de negócio
-  - Interfaces (Ports) que definem contratos
 
 ### 2. Aplicação (Casos de Uso)
 - Orquestra o fluxo entre o domínio e o mundo exterior
 - Implementa os casos de uso da aplicação
-- Define portas (interfaces) para comunicação
+- Define as portas (interfaces) para comunicação com o mundo exterior
 - Exemplos:
-  - Services
+  - Portas (interfaces) para repositórios e serviços externos
   - Command/Query Handlers
-  - Ports (interfaces) para repositórios e serviços externos
+  - Serviços específicos do módulo
 
 ### 3. Infraestrutura (Adaptadores)
 - Implementa as interfaces definidas nas camadas internas
@@ -168,10 +167,11 @@ Cada módulo (categories, customers, orders, products, webhook) segue a arquitet
 1. **Domain**
    - Contém as entidades e regras de negócio
    - Independente de frameworks externos
+   - Não define interfaces externas
 
 2. **Application**
    - Implementa os casos de uso
-   - Contém as portas (interfaces)
+   - Define as portas (interfaces) para comunicação externa
    - Implementa o padrão CQRS com queries
    - Serviços específicos do módulo
 
