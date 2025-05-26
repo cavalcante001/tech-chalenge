@@ -8,32 +8,37 @@
 
 ### Passos para Execução
 
-1. Para iniciar os containers, use o comando:
+1. Copie o arquivo de ambiente de exemplo:
+```bash
+cp .env.example .env
+```
+
+2. Para iniciar os containers, use o comando:
 ```bash
 make init
 ```
 
-2. Para executar a aplicação, use o comando:
+3. Para executar a aplicação, use o comando:
 ```bash
 make run
 ```
 
-3. Acesse a aplicação em:
+4. Acesse a aplicação em:
 ```
 http://localhost:3000
 ```
 
-4. Acesse a documentação Swagger em:
+5. Acesse a documentação Swagger em:
 ```
 http://localhost:3000/docs
 ```
 
-5. Caso queira criar uma migração, use o comando:
+6. Caso queira criar uma migração, use o comando:
 ```
 make migrate-create -- name=nomeDaSuaMigracao
 ```
 
-6. Caso queira limpar os containers, use o comando:
+7. Caso queira limpar os containers, use o comando:
 ```bash
 make clean
 ```
