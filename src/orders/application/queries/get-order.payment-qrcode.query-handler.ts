@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { OrderRepository } from '../ports/order.repository';
 import { GetOrderPaymentQrcodeQuery } from './get-order.payment-qrcode';
 import { NotFoundException } from '@nestjs/common';
-import { GenerateQrCode } from '../ports/order.generate-qrcode';
+import { MercadoPagoPaymentGateway } from '../../../common/infrastructure/gateway/mercadopago/port/mercadopago-payment-gateway.port';
 
 @QueryHandler(GetOrderPaymentQrcodeQuery)
 export class GetOrderPaymentQrcodeQueryHandler
@@ -10,7 +10,7 @@ export class GetOrderPaymentQrcodeQueryHandler
 {
   constructor(
     private readonly orderRepository: OrderRepository,
-    private readonly generateQrCode: GenerateQrCode,
+    private readonly generateQrCode: MercadoPagoPaymentGateway,
   ) {}
 
   async execute(query: GetOrderPaymentQrcodeQuery) {

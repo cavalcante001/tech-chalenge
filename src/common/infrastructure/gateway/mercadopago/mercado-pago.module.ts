@@ -1,16 +1,16 @@
 import { Module } from "@nestjs/common";
-import { GenerateQrCode } from "src/orders/application/ports/order.generate-qrcode";
-import { GatewayMercadoPago } from "./mercado-pago/adapter/generate.qrcode-adapter";
+import { MercadoPagoPaymentGateway } from "./port/mercadopago-payment-gateway.port";
 import { HttpModule } from "@nestjs/axios";
+import { GatewayMercadoPago } from "./adapter/mercado-pago.gateway";
 
 @Module({
     imports: [HttpModule],
     providers: [
         {
-            provide: GenerateQrCode,
+            provide: MercadoPagoPaymentGateway,
             useClass: GatewayMercadoPago,
         },
     ],
-    exports: [GenerateQrCode]
+    exports: [MercadoPagoPaymentGateway]
 })
 export class GatewayMercadoPagoModule {}

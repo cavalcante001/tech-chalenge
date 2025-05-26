@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { CustomerService } from '../../application/customer.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { IdResponse } from 'src/common/presenters/http/dto/id.response.dto';
+import { IdResponse } from 'src/common/dto/id.response.dto';
 import { CreateCustomerCommand } from 'src/customers/application/commands/create-customer.command';
 import { CreateCustomerDto } from '../dto/create-customer.dto';
 import { CustomerReadModel } from 'src/customers/domain/read-models/customer.read-model';

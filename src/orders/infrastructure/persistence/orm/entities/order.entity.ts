@@ -6,8 +6,8 @@ export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'customer_id', nullable: true })
-  customerId: string;
+  @Column({ name: 'customer_id', type: 'uuid', nullable: true })
+  customerId: string | null;
 
   @Column()
   status: string;
@@ -16,10 +16,10 @@ export class OrderEntity {
   transactionCode: string;
 
   @Column({ name: 'paid_at', type: 'timestamp with time zone', nullable: true })
-  paidAt: Date;
+  paidAt: Date | null;
 
   @Column({ name: 'amount_paid', type: 'decimal', precision: 10, scale: 2, nullable: true })
-  amountPaid: number;
+  amountPaid: number | null;
 
   @OneToMany(() => OrderItemEntity, (item) => item.order, { cascade: true })
   items: OrderItemEntity[];

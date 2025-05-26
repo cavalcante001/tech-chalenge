@@ -3,7 +3,7 @@ import { CustomerController } from './customer.controller';
 import { CustomerService } from '../../application/customer.service';
 import { CreateCustomerDto } from '../dto/create-customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
-import { IdResponse } from 'src/common/presenters/http/dto/id.response.dto';
+import { IdResponse } from 'src/common/dto/id.response.dto';
 import { CustomerReadModel } from 'src/customers/domain/read-models/customer.read-model';
 import { UpdateCustomerCommand } from 'src/customers/application/commands/update-customer.command';
 

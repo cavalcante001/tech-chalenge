@@ -11,7 +11,7 @@ import {
 import { OrdersService } from '../../application/orders.service';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { IdResponse } from 'src/common/presenters/http/dto/id.response.dto';
+import { IdResponse } from 'src/common/dto/id.response.dto';
 import { CreateOrderCommand } from 'src/orders/application/commands/create-order.command';
 import { OrderReadModel } from 'src/orders/domain/read-models/order.read-model';
 import { GetOrdersQueryDto } from '../dto/get-orders-query.dto';

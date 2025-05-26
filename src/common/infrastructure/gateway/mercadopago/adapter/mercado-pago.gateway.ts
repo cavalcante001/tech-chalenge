@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom } from 'rxjs';
-import { GenerateQrCode } from 'src/orders/application/ports/order.generate-qrcode';
+import { MercadoPagoPaymentGateway, PaymentResponse } from '../port/mercadopago-payment-gateway.port';
 import { QrCodePayload, QrCodeResponse } from '../dto/qrcode-payload.dto';
 
 @Injectable()
-export class GatewayMercadoPago implements GenerateQrCode {
+export class GatewayMercadoPago implements MercadoPagoPaymentGateway {
   private readonly logger = new Logger(GatewayMercadoPago.name);
 
   constructor(private readonly httpService: HttpService) {}
@@ -52,6 +52,27 @@ export class GatewayMercadoPago implements GenerateQrCode {
         ),
     );
 
+    return data;
+  }
+
+  async getPayment(id: string): Promise<PaymentResponse> {
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get<PaymentResponse>(
+          `${process.env.MERCADO_PAGO_API}/v1/payments/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+            },
+          },
+        )
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response?.data);
+            throw new InternalServerErrorException(error.response?.data);
+          }),
+        ),
+    );
     return data;
   }
 }

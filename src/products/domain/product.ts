@@ -37,7 +37,7 @@ export class Product {
       throw new Error('O estoque é obrigatório.');
     }
   }
-
+  
   changeName(name: string): void {
     if (!name) {
       throw new Error('O nome do produto é obrigatório.');

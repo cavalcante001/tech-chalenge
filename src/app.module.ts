@@ -8,6 +8,7 @@ import { HealthModule } from './health/health.module';
 import { AppController } from './app.controller';
 import { CustomersModule } from './customers/customers.module';
 import { OrdersModule } from './orders/orders.module';
+import { WebhookModule } from './webhook/webhook.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -26,7 +27,8 @@ import { OrdersModule } from './orders/orders.module';
     ProductsModule,
     CustomersModule,
     HealthModule,
-    OrdersModule, 
+    OrdersModule,
+    WebhookModule, 
   ],
   controllers: [AppController],
 })

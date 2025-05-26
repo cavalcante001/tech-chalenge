@@ -8,7 +8,7 @@ export class Order {
 
   private _transactionCode: string | null = null;
   private _paidAt: Date | null = null;
-  private _amountPaid: number = 0;
+  private _amountPaid: number | null = null;
 
   constructor(public readonly id: string) {}
 
@@ -68,7 +68,7 @@ export class Order {
     return this._paidAt;
   }
 
-  get amountPaid(): number {
+  get amountPaid(): number | null {
     return this._amountPaid;
   }
 }

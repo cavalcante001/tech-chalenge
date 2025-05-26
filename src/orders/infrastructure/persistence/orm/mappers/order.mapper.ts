@@ -36,7 +36,10 @@ export class OrderMapper {
     const entity = new OrderEntity();
     entity.id = order.id;
     entity.status = order.status.value;
-    entity.customerId = order.customerId || '';
+    entity.customerId = order.customerId || null;
+    entity.amountPaid = order.amountPaid || null;
+    entity.transactionCode = order.transactionCode || '';
+    entity.paidAt = order.paidAt || null;
     entity.items = order.items.map((item) => {
       const orderItemEntity = new OrderItemEntity();
       orderItemEntity.id = item.id;

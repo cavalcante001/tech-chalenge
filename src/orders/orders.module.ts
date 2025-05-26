@@ -10,7 +10,7 @@ import { OrdersInfrastructureModule } from './infrastructure/orders-infrastructu
 import { GetOrdersQueryHandler } from './application/queries/get-orders.query-handler';
 import { GetOrderQueryHandler } from './application/queries/get-order.query-handler';
 import { GetOrderPaymentQrcodeQueryHandler } from './application/queries/get-order.payment-qrcode.query-handler';
-import { GatewayMercadoPagoModule } from './infrastructure/gateways/mercado-pago.module';
+import { GatewayMercadoPagoModule } from '../common/infrastructure/gateway/mercadopago/mercado-pago.module';
 import { UpdateOrderStatusCommandHandler } from './application/commands/update-order-status.command-handler';
 
 @Module({
@@ -31,5 +31,6 @@ import { UpdateOrderStatusCommandHandler } from './application/commands/update-o
     OrdersInfrastructureModule,
     GatewayMercadoPagoModule,
   ],
+  exports: [OrdersInfrastructureModule],
 })
 export class OrdersModule {}

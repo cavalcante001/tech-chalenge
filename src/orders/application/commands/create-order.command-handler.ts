@@ -17,8 +17,7 @@ export class CreateOrderCommandHandler
     private readonly orderFactory: OrderFactory,
     private readonly customerRepository: CustomerRepository,
     private readonly categoryRepository: CategoryRepository,
-    private readonly orderRepository: OrderRepository,
-    private readonly eventBus: EventBus,
+    private readonly orderRepository: OrderRepository
   ) {}
 
   async execute(command: CreateOrderCommand) {

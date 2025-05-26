@@ -5,7 +5,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { ProductReadModel } from 'src/products/domain/read-models/product.read-model';
-import { IdResponse } from 'src/common/presenters/http/dto/id.response.dto';
+import { IdResponse } from 'src/common/dto/id.response.dto';
 import { ProductStock } from 'src/products/domain/value-objects/product-stock';
 import { CreateProductCommand } from 'src/products/application/commands/create-product.command';
 import { UpdateProductCommand } from 'src/products/application/commands/update-product.command';

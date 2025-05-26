@@ -11,7 +11,7 @@ export class GetCategoriesQueryHandler
     private readonly categoriesRepository: CategoryRepository,
   ) {}
 
-  async execute(query: GetCategoriesQuery) {
+  async execute() {
     return this.categoriesRepository.findAll();
   }
 }
