@@ -13,6 +13,7 @@ export class ProductMapper {
       Number(productEntity.price),
       productEntity.category_id,
       productStock,
+      productEntity.image,
       productEntity.createdAt,
       productEntity.updatedAt
     );

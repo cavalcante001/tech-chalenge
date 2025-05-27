@@ -44,7 +44,8 @@ describe('ProductsService', () => {
         'Test Description',
         99.99,
         'category-123',
-        10
+        10,
+        'https://example.com/image.jpg'
       );
       const expectedResult = { id: '1', ...createProductCommand };
       jest.spyOn(commandBus, 'execute').mockResolvedValue(expectedResult);

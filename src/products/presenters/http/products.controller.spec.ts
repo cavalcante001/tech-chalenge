@@ -27,6 +27,7 @@ describe('ProductsController', () => {
     price: 99.99,
     categoryId: 'category-123',
     stock: new ProductStock(10),
+    image: 'https://example.com/image.jpg',
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -70,6 +71,7 @@ describe('ProductsController', () => {
         price: 99.99,
         categoryId: 'category-123',
         stock: 10,
+        image: 'https://example.com/image.jpg',
       };
       const expectedId = '1';
       jest.spyOn(commandBus, 'execute').mockResolvedValue(expectedId);
