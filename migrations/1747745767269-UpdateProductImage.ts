@@ -41,13 +41,13 @@ export class UpdateProductImage1747745767269 implements MigrationInterface {
             WHERE id = '996576cc-45d6-4918-9a2f-29988536c198';
             UPDATE products
             SET image = '{
-                "url": "https://example.com/image.jpg",
+                "url": "https://tech-challenge-fiap-pethraf.s3.sa-east-1.amazonaws.com/img/Refrigerante+Lata.jpeg",
                 "alt": "Refrigerante Lata"
             }'
             WHERE id = 'f79f4160-e6f0-4458-a287-bdf48b5b4b73';
             UPDATE products
             SET image = '{
-                "url": "https://example.com/image.jpg",
+                "url": "https://tech-challenge-fiap-pethraf.s3.sa-east-1.amazonaws.com/img/Suco+Natural.jpeg",
                 "alt": "Suco Natural"
             }'
             WHERE id = 'bf317dc7-85ec-4d15-ab75-35c7be3437f8';
