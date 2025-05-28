@@ -5,6 +5,32 @@
 ### Pré-requisitos
 - Docker
 - Docker Compose
+- Make (GNU Make)
+
+#### Instalação do Make
+
+- **macOS** (usando Homebrew):
+```bash
+brew install make
+```
+
+- **Linux** (Ubuntu/Debian):
+```bash
+sudo apt-get update
+sudo apt-get install make
+```
+
+- **Linux** (Fedora):
+```bash
+sudo dnf install make
+```
+
+- **Windows**:
+  - Instale o [Chocolatey](https://chocolatey.org/install)
+  - Execute no PowerShell como administrador:
+```bash
+choco install make
+```
 
 ### Passos para Execução
 

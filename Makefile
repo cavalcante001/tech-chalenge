@@ -3,8 +3,8 @@
 MIGRATION_PATH=migrations
 
 init:
-	@echo "Starting only the database container..."
-	docker compose up -d postgres-dev
+	@echo "Starting all containers..."
+	docker compose up -d
 	@echo "Running migrations..."
 	docker compose run --rm --no-deps api-dev npm run migration:up
 
