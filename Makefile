@@ -3,10 +3,12 @@
 MIGRATION_PATH=migrations
 
 init:
-	@echo "Starting all containers..."
-	docker compose up -d
+	@echo "Starting all containers except api-dev in background..."
+	docker compose up -d --scale api-dev=0
 	@echo "Running migrations..."
 	docker compose run --rm --no-deps api-dev npm run migration:up
+	@echo "Starting api-dev in foreground..."
+	docker compose up api-dev
 
 run:
 	@echo "Starting the application locally..."
