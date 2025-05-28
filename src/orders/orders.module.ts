@@ -12,6 +12,7 @@ import { GetOrderQueryHandler } from './application/queries/get-order.query-hand
 import { GetOrderPaymentQrcodeQueryHandler } from './application/queries/get-order.payment-qrcode.query-handler';
 import { GatewayMercadoPagoModule } from '../common/infrastructure/gateway/mercadopago/mercado-pago.module';
 import { UpdateOrderStatusCommandHandler } from './application/commands/update-order-status.command-handler';
+import { PaymentReceivedHandler } from './application/events/payment-received.handler';
 
 @Module({
   controllers: [OrdersController],
@@ -22,7 +23,8 @@ import { UpdateOrderStatusCommandHandler } from './application/commands/update-o
     GetOrdersQueryHandler,
     GetOrderQueryHandler,
     GetOrderPaymentQrcodeQueryHandler,
-    UpdateOrderStatusCommandHandler
+    UpdateOrderStatusCommandHandler,
+    PaymentReceivedHandler
   ],
   imports: [
     ProductsModule,

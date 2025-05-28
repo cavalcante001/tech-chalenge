@@ -1,9 +1,9 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { ProcessMercadoPagoWebhookCommand } from './process-mercadopago-webhook.command';
 import { MercadoPagoPaymentGateway } from 'src/common/infrastructure/gateway/mercadopago/port/mercadopago-payment-gateway.port';
 import { InternalServerErrorException, Logger } from '@nestjs/common';
 import { OrderRepository } from 'src/orders/application/ports/order.repository';
-import { OrderStatus } from 'src/orders/domain/value-objects/order-status';
+import { PaymentReceivedEvent } from 'src/orders/domain/events/payment-received.event';
 
 @CommandHandler(ProcessMercadoPagoWebhookCommand)
 export class ProcessMercadoPagoWebhookCommandHandler
@@ -15,6 +15,7 @@ export class ProcessMercadoPagoWebhookCommandHandler
   constructor(
     private readonly generateQrCode: MercadoPagoPaymentGateway,
     private readonly orderRepository: OrderRepository,
+    private readonly eventBus: EventBus,
   ) {}
   async execute(command: ProcessMercadoPagoWebhookCommand) {
     try {
@@ -24,20 +25,16 @@ export class ProcessMercadoPagoWebhookCommandHandler
       const payment = await this.generateQrCode.getPayment(command.id);
 
       if (payment.status === 'approved') {
-        const order = await this.orderRepository.findById(
-          payment.external_reference,
-        );
+        this.logger.debug(`Payment approved: ${payment.id}`);
 
-        if (order) {
-          order.status = new OrderStatus('received');
-          order.markAsPaid(
+        this.eventBus.publish(
+          new PaymentReceivedEvent(
             payment.id.toString(),
+            payment.external_reference,
             new Date(payment.date_approved),
             payment.transaction_details.total_paid_amount,
-          );
-          await this.orderRepository.save(order);
-          await this.orderRepository.refreshReadModel();
-        }
+          ),
+        );
       }
     } catch (error) {
       throw new InternalServerErrorException(error);
