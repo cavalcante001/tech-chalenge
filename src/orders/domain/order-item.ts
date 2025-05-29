@@ -10,6 +10,6 @@ export class OrderItem {
     ) {}
 
     get totalPrice() {
-        return this.unitPrice * this.quantity;
+        return Number((Number(this.unitPrice.toFixed(2)) * this.quantity).toFixed(2));
     }
 }
