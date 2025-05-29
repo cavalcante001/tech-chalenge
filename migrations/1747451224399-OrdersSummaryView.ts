@@ -17,6 +17,7 @@ export class OrdersSummaryView1747451224399 implements MigrationInterface {
         END AS "status",
         
         o.created_at AS "criadoEm",
+        o.updated_at AS "atualizadoEm",
 
         json_build_object(
           'codigoTransacao', COALESCE(o.transaction_code, ''),
@@ -44,6 +45,7 @@ export class OrdersSummaryView1747451224399 implements MigrationInterface {
         o.amount_paid,
         o.paid_at,
         o.created_at,
+        o.updated_at,
         o.transaction_code;
 
       CREATE UNIQUE INDEX idx_read_orders_summary_id ON read_orders_summary("idPedido");

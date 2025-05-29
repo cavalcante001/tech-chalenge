@@ -1,8 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { OrderRepository } from '../ports/order.repository';
 import { GetOrderPaymentQrcodeQuery } from './get-order.payment-qrcode';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { MercadoPagoPaymentGateway } from '../../../common/infrastructure/gateway/mercadopago/port/mercadopago-payment-gateway.port';
+import { OrderStatus } from 'src/orders/domain/value-objects/order-status';
 
 @QueryHandler(GetOrderPaymentQrcodeQuery)
 export class GetOrderPaymentQrcodeQueryHandler
@@ -18,6 +19,10 @@ export class GetOrderPaymentQrcodeQueryHandler
 
     if (!order) {
       throw new NotFoundException(`Order with id ${query.id} not found`);
+    }
+
+    if (!order.status.equals(new OrderStatus('pending'))) {
+      throw new BadRequestException('Order is not pending');
     }
 
     return await this.generateQrCode.generateQrCode({

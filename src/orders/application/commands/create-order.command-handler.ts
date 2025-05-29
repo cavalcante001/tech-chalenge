@@ -3,7 +3,7 @@ import { CreateOrderCommand } from './create-order.command';
 import { ProductRepository } from 'src/products/application/ports/product.repository';
 import { OrderFactory } from 'src/orders/domain/factories/order.factory';
 import { CustomerRepository } from 'src/customers/application/ports/customer.repository';
-import { Logger, NotFoundException } from '@nestjs/common';
+import { Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CategoryRepository } from 'src/categories/application/ports/categories.repository';
 import { OrderRepository } from '../ports/order.repository';
 @CommandHandler(CreateOrderCommand)
@@ -24,6 +24,11 @@ export class CreateOrderCommandHandler
     this.logger.debug(
       `Processing "CreateOrderCommand": ${JSON.stringify(command)}`,
     );
+
+    if (!command.items?.length) {
+      throw new BadRequestException('O pedido deve ter pelo menos um item');
+    }
+
     if (command.customerId) {
       const customer = await this.customerRepository.findById(
         command.customerId,
