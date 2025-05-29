@@ -17,6 +17,9 @@ export class OrderMapper {
     const orderModel = new Order(orderEntity.id);
     orderModel.status = orderStatus;
     orderModel.customerId = orderEntity.customerId;
+    orderModel.transactionCode = orderEntity.transactionCode || null;
+    orderModel.paidAt = orderEntity.paidAt;
+    orderModel.amountPaid = orderEntity.amountPaid;
     orderModel.items = orderEntity.items.map(
       (item) =>
         new OrderItem(

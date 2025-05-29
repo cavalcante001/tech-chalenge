@@ -71,4 +71,16 @@ export class Order {
   get amountPaid(): number | null {
     return this._amountPaid;
   }
+
+  set transactionCode(value: string | null) {
+    this._transactionCode = value;
+  }
+
+  set paidAt(value: Date | null) {
+    this._paidAt = value;
+  }
+
+  set amountPaid(value: number | null) {
+    this._amountPaid = value;
+  }
 }
