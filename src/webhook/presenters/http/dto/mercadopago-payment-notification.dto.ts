@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNumber, IsBoolean, IsDateString, IsObject, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 
 export class PaymentDataDto {
   @ApiProperty({
@@ -44,10 +44,10 @@ export class MercadoPagoPaymentNotificationDto {
 
   @ApiProperty({
     description: 'Notification ID',
-    example: 121584908225
+    example: '121584908225'
   })
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
 
   @ApiProperty({
     description: 'Whether the payment is in live mode',
@@ -64,9 +64,31 @@ export class MercadoPagoPaymentNotificationDto {
   type: string;
 
   @ApiProperty({
+    description: 'Application ID',
+    example: '7638198099120330'
+  })
+  @IsString()
+  application_id: string;
+
+  @ApiProperty({
+    description: 'Status',
+    example: 'opened'
+  })
+  @IsString()
+  status: string;
+
+  @ApiProperty({
+    description: 'Version',
+    example: 0
+  })
+  @IsNumber()
+  version: number;
+
+  @ApiProperty({
     description: 'User ID',
     example: '2440640118'
   })
   @IsString()
+  @Transform(({ value }) => value?.toString())
   user_id: string;
-} 
+}
