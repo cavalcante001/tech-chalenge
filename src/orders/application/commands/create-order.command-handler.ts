@@ -48,7 +48,7 @@ export class CreateOrderCommandHandler
     const missing = productIds.filter((id) => !foundIds.has(id));
 
     if (missing.length > 0) {
-      throw new Error(`Produtos não encontrados: ${missing.join(', ')}`);
+      throw new NotFoundException(`Produtos não encontrados: ${missing.join(', ')}`);
     }
 
     const categoryIds = [...new Set(products.map((p) => p.categoryId))];
@@ -60,12 +60,12 @@ export class CreateOrderCommandHandler
     const itemData = command.items.map(({ productId, quantity }) => {
       const product = productMap.get(productId);
       if (!product) {
-        throw new Error(`Product not found: ${productId}`);
+        throw new NotFoundException(`Produto não encontrado: ${productId}`);
       }
 
       const categoryName = categoryMap.get(product.categoryId);
       if (!categoryName) {
-        throw new Error(`Category not found for product ${productId}`);
+        throw new NotFoundException(`Categoria não encontrada para o produto ${productId}`);
       }
 
       return { product, quantity, categoryName };
