@@ -14,11 +14,14 @@ export class ProcessMercadoPagoWebhookCommandHandler
   );
   constructor(
     private readonly generateQrCode: MercadoPagoPaymentGateway,
-    private readonly orderRepository: OrderRepository,
     private readonly eventBus: EventBus,
   ) {}
   async execute(command: ProcessMercadoPagoWebhookCommand) {
     try {
+      if (command.type !== 'payment') {
+        return;
+      }
+
       this.logger.debug(
         `Processing "ProcessMercadoPagoWebhookCommand": ${JSON.stringify(command)}`,
       );

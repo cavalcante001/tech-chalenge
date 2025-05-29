@@ -1,8 +1,8 @@
-import { Controller, Post, Body} from '@nestjs/common';
+import { Controller, Post, Body, Query } from '@nestjs/common';
 import { WebhookService } from '../../application/webhook.service';
-import { MercadoPagoPaymentNotificationDto } from './dto/mercadopago-payment-notification.dto';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import { ProcessMercadoPagoWebhookCommand } from 'src/webhook/application/commands/process-mercadopago-webhook.command';
+import { WebhookNotificationQueryDto } from './dto/webhook-notification-query.dto';
 
 @Controller('webhook')
 export class WebhookController {
@@ -11,13 +11,11 @@ export class WebhookController {
   @Post('/mercadopago')
   @ApiExcludeEndpoint()
   async handleWebhookNotification(
-    @Body() mercadoPagoPaymentNotificationDto: MercadoPagoPaymentNotificationDto,
+    @Query('data.id') id: string,
+    @Query('type') type: string,
   ) {
     return this.webhookService.processWebhookNotification(
-      new ProcessMercadoPagoWebhookCommand(
-        mercadoPagoPaymentNotificationDto.data.id,
-        mercadoPagoPaymentNotificationDto.type
-      )
+      new ProcessMercadoPagoWebhookCommand(id, type),
     );
   }
 }
