@@ -17,7 +17,7 @@ export class Order {
   }
 
   get total() {
-    return this.items.reduce((acc, item) => acc + item.totalPrice, 0);
+    return Number(this.items.reduce((acc, item) => acc + item.totalPrice, 0).toFixed(2));
   }
 
   markAsPaid(transactionCode: string, paidAt: Date, amountPaid: number) {
