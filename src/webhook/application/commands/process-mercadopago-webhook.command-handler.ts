@@ -13,7 +13,7 @@ export class ProcessMercadoPagoWebhookCommandHandler
     ProcessMercadoPagoWebhookCommandHandler.name,
   );
   constructor(
-    private readonly generateQrCode: MercadoPagoPaymentGateway,
+    private readonly mercadoPagoPaymentGateway: MercadoPagoPaymentGateway,
     private readonly eventBus: EventBus,
   ) {}
   async execute(command: ProcessMercadoPagoWebhookCommand) {
@@ -25,7 +25,7 @@ export class ProcessMercadoPagoWebhookCommandHandler
       this.logger.debug(
         `Processing "ProcessMercadoPagoWebhookCommand": ${JSON.stringify(command)}`,
       );
-      const payment = await this.generateQrCode.getPayment(command.id);
+      const payment = await this.mercadoPagoPaymentGateway.getPayment(command.id);
 
       if (payment.status === 'approved') {
         this.logger.debug(`Payment approved: ${payment.id}`);
